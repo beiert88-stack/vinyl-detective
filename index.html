@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0c"><link rel="manifest" href="/manifest.webmanifest">
+<title>Vinyl Detective</title>
+<style>
+:root{--bg:#0b0b0c;--card:#171719;--line:#303035;--text:#f4f4f5;--muted:#9999a1;--ok:#bff3aa;--warn:#ffd78b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:15px 0}.brand{font-size:30px;font-weight:900}.sub{color:var(--muted)}button,.filebtn{border:1px solid var(--line);background:#fff;color:#111;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer}.dark{background:#28282d;color:#fff}.danger{background:#3b2020;color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0}.views{display:flex;gap:8px;flex-wrap:wrap}.view{display:none}.view.active{display:block}
+input[type=file]{display:none}.previews{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.previews img{width:135px;height:135px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}.row{padding:10px 0;border-bottom:1px solid var(--line)}.k{color:var(--muted);font-size:12px}.v{font-weight:750}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;background:#283d24;color:var(--ok)}.warn{background:#493817;color:var(--warn)}
+textarea{width:100%;min-height:300px;background:#0a0a0b;color:#fff;border:1px solid #444;border-radius:12px;padding:14px;font:15px/1.5 monospace}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.candidate{border:1px solid var(--line);border-radius:13px;padding:13px;margin:8px 0}.candidate a{color:#fff}.muted{color:var(--muted)}.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}.item{border:1px solid var(--line);border-radius:14px;padding:14px}
+.small{font-size:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}input.text{display:block;width:100%;background:#0b0b0c;border:1px solid #444;border-radius:10px;color:#fff;padding:11px}
+footer{color:#777;font-size:12px;padding:20px 0}
+@media(max-width:700px){.grid,.two{grid-template-columns:1fr}.brand{font-size:25px}}
+</style></head>
+<body><main>
+<header class="top"><div><div class="brand">🎵 Vinyl Detective</div><div class="sub">Identify · Verify · Collect · Post</div></div>
+<div class="views"><button class="dark" data-main="scan">📷 Scan</button><button class="dark" data-main="collection">📚 Sammlung</button></div></header>
+
+<section id="scan" class="view active">
+<div class="card"><h2>📷 Platte scannen</h2>
+<p class="muted">Ideal: Cover vorne/hinten + Label A/B + Matrix/Runout. Bis zu 6 Bilder.</p>
+<label class="filebtn">Fotos auswählen <input id="photos" type="file" accept="image/*" multiple></label>
+<div id="previews" class="previews"></div><p id="status" class="muted"></p>
+<button id="analyze" style="display:none">🔎 Analysieren</button></div>
+
+<div id="result" class="card" style="display:none">
+<div class="views"><button class="tab" data-sub="vinyl">💿 Vinyl</button><button class="tab dark" data-sub="instagram">📸 Instagram</button></div>
+<div id="vinyl" class="subview" style="margin-top:16px">
+<div id="fields" class="grid"></div><p><span id="confidence" class="badge"></span></p>
+<p id="evidence" class="muted"></p><p id="needs" class="muted"></p>
+<div id="candidates"></div>
+</div>
+<div id="instagram" class="subview" style="display:none;margin-top:16px"><p class="muted">Nur Text – keine Bildgenerierung und kein automatisches Instagram-Posting.</p>
+<div class="card" style="padding:14px;margin:0 0 14px"><b>Textvorlage</b><p class="small muted">Feste Struktur wie deine Beispielposts. Handles kannst du einmal hinterlegen; sie werden nicht automatisch als echte Accounts bestätigt.</p></div><div class="two"><div><label class="small muted">Instagram Künstler</label><input id="artistHandle" class="text" placeholder="@artist"></div>
+<div><label class="small muted">Instagram Label</label><input id="labelHandle" class="text" placeholder="@label"></div></div>
+<p><button id="hashtags" class="dark">🔥 Aktuelle Hashtags recherchieren</button></p>
+<textarea id="caption"></textarea>
+<div class="actions"><button id="copy">Caption kopieren</button><button id="regen" class="dark">Neu erzeugen</button></div>
+</div>
+</div></section>
+
+<section id="collection" class="view"><div class="card"><h2>📚 Meine Sammlung</h2>
+<div class="actions"><button id="exportJson">JSON exportieren</button><button id="exportCsv" class="dark">CSV exportieren</button><label class="filebtn dark">JSON importieren <input id="importJson" type="file" accept="application/json"></label><button id="clearCollection" class="danger">Sammlung leeren</button></div>
+<div id="collectionList" class="list" style="margin-top:14px"></div></div></section>
+
+<footer>Discogs-Daten: „Data provided by Discogs.“ Die App ist nicht mit Discogs verbunden, wird nicht von Discogs gesponsert und nicht von Discogs unterstützt. Prüfe vor Veröffentlichung die aktuellen API-Bedingungen.</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];let files=[],data=null,hashtags=[];
+$$("[data-main]").forEach(b=>b.onclick=()=>{$$(".view").forEach(v=>v.classList.remove("active"));$("#"+b.dataset.main).classList.add("active");});
+$$(".tab").forEach(b=>b.onclick=()=>{$$(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("#vinyl").style.display=b.dataset.sub==="vinyl"?"block":"none";$("#instagram").style.display=b.dataset.sub==="instagram"?"block":"none";});
+$("#photos").onchange=e=>{files=[...e.target.files].slice(0,6);$("#previews").innerHTML="";files.forEach(f=>{let i=new Image();i.src=URL.createObjectURL(f);$("#previews").append(i)});$("#analyze").style.display=files.length?"inline-block":"none";$("#status").textContent=files.length+" Foto(s) bereit.";};
+$("#analyze").onclick=async()=>{try{let fd=new FormData();files.forEach(f=>fd.append("photos",f));$("#status").textContent="KI analysiert Bilder und gleicht Pressungen ab…";let r=await fetch("/api/analyze",{method:"POST",body:fd});data=await r.json();if(!r.ok)throw Error(data.error||"Analyse fehlgeschlagen");render(data);$("#status").textContent=data.demo?"Demo-Modus: OPENAI_API_KEY fehlt.":"Analyse abgeschlossen."}catch(e){$("#status").textContent=e.message}};
+function render(d){$("#result").style.display="block";let m={artist:"Band/Künstler",album:"Album",pressing:"Pressung",variant:"Variante/Farbe",label:"Label",catno:"Katalognummer",country:"Land",year:"Jahr",copies:"Auflagenhöhe",format:"Format"};
+$("#fields").innerHTML=Object.entries(m).map(([k,v])=>`<div class=row><div class=k>${v}</div><div class=v>${d[k]??"Nicht verifiziert"}</div></div>`).join("");
+$("#confidence").textContent=Math.round((d.confidence||0)*100)+" % Konfidenz";$("#evidence").textContent="Belege: "+(d.evidence||[]).join(" · ");$("#needs").textContent=d.needs?.length?"Noch benötigt: "+d.needs.join(" · "):"";
+$("#candidates").innerHTML=d.candidates?.length?"<h3>Alternative Discogs-Kandidaten</h3>"+d.candidates.map(c=>`<div class=candidate><b>${c.artist} – ${c.title}</b><br>${c.catno||""} · ${c.country||""} · ${c.year||""}<br><span class=badge>${c.score}%</span> · <a href="${c.url}" target="_blank" rel="noopener">Release öffnen</a></div>`).join(""):"";
+$("#artistHandle").value=localStorage.getItem("artistHandle")||"";$("#labelHandle").value=localStorage.getItem("labelHandle")||"";makeCaption();saveCollection(d);}
+function slug(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z0-9]+/g,"").trim()}
+function makeCaption(){
+ if(!data)return;
+ let ah=$("#artistHandle").value.trim()||"@"+slug(data.artist);
+ let lh=$("#labelHandle").value.trim()||"@"+slug(data.label);
+ localStorage.setItem("artistHandle",ah); localStorage.setItem("labelHandle",lh);
+ let tags=hashtags.length?hashtags:["#"+slug(data.artist),"#"+slug(data.album),"#vinyl","#vinylcollector","#vinylcommunity","#recordcollector","#punkrockvinyl"];
+ $("#caption").value=`${(data.artist||"").toUpperCase()} - ${(data.album||"").toUpperCase()}
+_______________________________________________________
+*
+${ah} ${data.year||""}
+*
+${data.variant||"Variant not verified"}
+*
+${lh} ${data.year||""}
+*
+*
+*
+${[...new Set(tags)].join(" ")}`;
+}
+$("#artistHandle").oninput=makeCaption;$("#labelHandle").oninput=makeCaption;
+$("#hashtags").onclick=async()=>{if(!data)return;$("#status").textContent="Recherchiere aktuelle Hashtags…";let r=await fetch("/api/hashtags",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});let j=await r.json();hashtags=j.hashtags||[];makeCaption();$("#status").textContent=j.source==="web-researched"?"Hashtags aktuell recherchiert.":"Fallback-Hashtags verwendet."};
+$("#copy").onclick=async()=>{await navigator.clipboard.writeText($("#caption").value);$("#status").textContent="Caption kopiert."};$("#regen").onclick=makeCaption;
+function getCol(){return JSON.parse(localStorage.getItem("vinylCollection")||"[]")}
+function saveCollection(d){let a=getCol();if(!a.some(x=>x.discogs?.id===d.discogs?.id&&d.discogs?.id)||!d.discogs){a.unshift({...d,savedAt:new Date().toISOString()});a=a.slice(0,500);localStorage.setItem("vinylCollection",JSON.stringify(a));}renderCollection();}
+function renderCollection(){let a=getCol();$("#collectionList").innerHTML=a.length?a.map((x,i)=>`<div class=item><b>${x.artist||""} – ${x.album||""}</b><br><span class=muted>${x.variant||""}</span><br>${x.label||""} · ${x.year||""}<br>${x.copies??"Auflage nicht verifiziert"}<br><button class=dark onclick="removeItem(${i})">Entfernen</button></div>`).join(""):"<p class=muted>Noch keine Platten gespeichert.</p>";}
+window.removeItem=i=>{let a=getCol();a.splice(i,1);localStorage.setItem("vinylCollection",JSON.stringify(a));renderCollection()};
+function download(name,text,type){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();}
+$("#exportJson").onclick=()=>download("vinyl-collection.json",JSON.stringify(getCol(),null,2),"application/json");
+$("#exportCsv").onclick=()=>{let a=getCol(),keys=["artist","album","variant","label","catno","country","year","copies","format"];let esc=v=>`"${String(v??"").replaceAll('"','""')}"`;download("vinyl-collection.csv",[keys.join(","),...a.map(x=>keys.map(k=>esc(x[k])).join(","))].join("\\n"),"text/csv")};
+$("#importJson").onchange=async e=>{let f=e.target.files[0];if(!f)return;let a=JSON.parse(await f.text());if(!Array.isArray(a))throw Error("Ungültige Sammlung");localStorage.setItem("vinylCollection",JSON.stringify(a));renderCollection()};
+$("#clearCollection").onclick=()=>{if(confirm("Sammlung wirklich löschen?")){localStorage.removeItem("vinylCollection");renderCollection()}};
+if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");renderCollection();
+</script></body></html>
