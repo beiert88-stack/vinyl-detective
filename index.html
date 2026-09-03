@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ff4f8b">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Vinyl Detective 2.0</title>
+<style>
+:root{
+ --bg:#120d20;--card:#1d1530;--card2:#251a3d;--ink:#fff8fc;--muted:#b9aec7;
+ --pink:#ff4f8b;--orange:#ff9b42;--yellow:#ffe05b;--cyan:#4de1ff;--purple:#9d72ff;
+ --green:#52e39b;--line:#3b2b55;--shadow:0 18px 50px #0007
+}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,sans-serif;
+background:radial-gradient(circle at 10% 0%,#54205d 0,#1c1230 28%,#120d20 65%),var(--bg);min-height:100vh}
+header{max-width:1050px;margin:auto;padding:28px 18px 12px}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--pink),var(--orange),var(--yellow));display:grid;place-items:center;font-size:30px;box-shadow:0 10px 35px #ff4f8b55}
+h1{margin:0;font-size:31px;letter-spacing:-1px}header p{margin:4px 0;color:var(--muted)}
+main{max-width:1050px;margin:auto;padding:0 18px 50px}
+nav{display:flex;gap:8px;overflow:auto;padding:10px 0 4px}
+nav button{white-space:nowrap}
+button{border:0;border-radius:13px;padding:12px 16px;background:linear-gradient(135deg,var(--pink),#ff6d61);color:white;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 8px 22px #ff4f8b25}
+button.alt{background:var(--card2);box-shadow:none;border:1px solid var(--line)}button.good{background:linear-gradient(135deg,var(--green),#22b9a5)}button.blue{background:linear-gradient(135deg,var(--cyan),#627cff);color:#101020}
+.card{background:linear-gradient(145deg,#211632ee,#171125ee);border:1px solid var(--line);border-radius:22px;padding:19px;margin:14px 0;box-shadow:var(--shadow)}
+.card h2{margin:0 0 8px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+label,.fieldtitle{font-weight:750;display:block;margin:8px 0 5px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #49375f;border-radius:12px;background:#120d20;color:var(--ink);font:inherit}
+textarea{min-height:85px}.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:10px;margin-top:12px}
+.preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:15px;border:1px solid var(--line)}
+.preview .photo{position:relative}.badge{position:absolute;left:7px;bottom:7px;background:#000b;border-radius:9px;padding:4px 7px;font-size:12px}
+.hidden{display:none}.result{white-space:pre-wrap;background:#110c1e;border:1px solid var(--line);padding:14px;border-radius:14px;min-height:65px}
+.status{padding:10px 12px;border-radius:12px;background:#251a3d;margin-top:10px}.status.ok{border:1px solid #2c8b68}.status.warn{border:1px solid #9b7a34}
+.pills{display:flex;flex-wrap:wrap;gap:6px}.pill{padding:6px 9px;border-radius:99px;background:#302044;border:1px solid #48345d;color:#ddd2e9;font-size:12px}
+.hero{background:linear-gradient(120deg,#3a1647,#1b1531 55%,#153348);border:1px solid #5a3c6c}
+.bigscore{font-size:44px;font-weight:900;background:linear-gradient(90deg,var(--yellow),var(--pink));-webkit-background-clip:text;color:transparent}
+.item{padding:14px 0;border-top:1px solid var(--line)}.item h3{margin:0 0 3px}
+.toggle{display:flex;align-items:center;gap:10px;background:#171024;border:1px solid var(--line);padding:10px;border-radius:12px}
+.toggle input{width:auto}.smallbtn{padding:8px 10px;font-size:13px}
+a{color:var(--cyan)}
+footer{max-width:1050px;margin:auto;padding:0 18px 35px;color:#8e829e;font-size:12px}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">💿</div><div><h1>Vinyl Detective</h1><p>Dein bunter Platten-Spürhund · 2.0</p></div></div></header>
+<main>
+<nav><button onclick="tab('detective')">🔎 Detective</button><button class="alt" onclick="tab('collection')">💿 Sammlung</button><button class="alt" onclick="tab('captions')">📸 Instagram</button><button class="alt" onclick="tab('settings')">🧠 KI & Einstellungen</button></nav>
+
+<section id="detective">
+<div class="card hero">
+<h2>🕵️ Neuer Fall</h2><p class="muted">Je mehr Fotos, desto besser: Cover vorne/hinten, Label A/B, Matrix/Runout, Barcode und Inserts.</p>
+<input id="photos" type="file" accept="image/*" multiple>
+<div id="preview" class="preview"></div>
+<div class="row"><button onclick="localScan()">✨ Lokal lesen</button><button class="blue" onclick="aiScan()">🧠 KI-Analyse</button><button class="alt" onclick="clearPhotos()">Leeren</button></div>
+<div id="status" class="status">Bereit für deinen nächsten Fall.</div>
+</div>
+
+<div class="card">
+<h2>🎯 Erkanntes Exemplar</h2>
+<div class="grid">
+<div><label>Künstler</label><input id="artist"></div><div><label>Album / Titel</label><input id="album"></div>
+<div><label>Katalognummer</label><input id="cat"></div><div><label>Barcode</label><input id="barcode"></div>
+<div><label>Label</label><input id="label"></div><div><label>Jahr</label><input id="year" type="number"></div>
+<div><label>Land</label><input id="country"></div><div><label>Format</label><input id="format" placeholder="LP, 7", 12" …"></div>
+<div><label>Farbe / Variante</label><input id="variant"></div><div><label>Pressungsmenge</label><input id="quantity" placeholder="Nur wenn ausdrücklich belegt"></div>
+</div>
+<label>Matrix / Runout</label><textarea id="matrix" placeholder="Hier niemals Zeichen erfinden. Nur sichere Lesungen."></textarea>
+<label>Edition / Belege / Unsicherheiten</label><textarea id="notes"></textarea>
+<div class="row"><button onclick="discogs()">🌐 Discogs suchen</button><button class="good" onclick="save()">💾 In Sammlung</button></div>
+<div id="result" class="result" style="margin-top:10px">Noch keine Analyse.</div>
+</div>
+
+<div class="card"><h2>🧩 Schnellaktionen</h2>
+<div class="row"><button class="alt" onclick="focusField('matrix')">Matrix prüfen</button><button class="alt" onclick="focusField('barcode')">Barcode prüfen</button><button class="alt" onclick="focusField('cat')">Katalognummer prüfen</button><button class="alt" onclick="makeCaption()">Caption bauen</button></div>
+</div>
+</section>
+
+<section id="collection" class="hidden">
+<div class="card"><h2>💿 Deine Sammlung</h2>
+<input id="filter" placeholder="Künstler, Album, Label, Katalognummer …" oninput="render()">
+<select id="sort" onchange="render()"><option value="artist">A–Z</option><option value="year">Jahr</option><option value="added">Zuletzt hinzugefügt</option></select>
+<div class="row"><button class="alt" onclick="exportJSON()">JSON exportieren</button><button class="alt" onclick="exportCSV()">CSV exportieren</button><label class="toggle">JSON importieren <input id="imp" type="file" accept=".json" onchange="importJSON(event)"></label></div>
+<div id="list"></div>
+</div>
+</section>
+
+<section id="captions" class="hidden">
+<div class="card"><h2>📸 Instagram Studio</h2><p class="muted">Kein automatisches Posten – du entscheidest, was veröffentlicht wird.</p>
+<div class="grid"><div><label>Künstler-Instagram</label><input id="ah" placeholder="@artist"></div><div><label>Label-Instagram</label><input id="lh" placeholder="@label"></div></div>
+<div class="row"><button onclick="makeCaption()">✨ Caption erzeugen</button><button class="alt" onclick="copyCaption()">Kopieren</button></div>
+<textarea id="caption" style="min-height:230px;margin-top:10px"></textarea>
+</div>
+</section>
+
+<section id="settings" class="hidden">
+<div class="card hero"><h2>🧠 KI-Modus</h2>
+<p>Diese App hat <b>zwei Ebenen</b>: kostenlose lokale OCR und optional eine KI, die auf deinem eigenen Rechner laufen kann.</p>
+<div class="toggle"><input id="ollamaEnabled" type="checkbox" checked><span>Lokale KI verwenden, wenn verfügbar</span></div>
+<label>Ollama-Adresse</label><input id="ollamaUrl" value="http://localhost:11434">
+<label>Vision-Modell</label><input id="ollamaModel" value="qwen3-vl:4b">
+<div class="row"><button class="blue" onclick="testAI()">🧪 KI testen</button><button class="alt" onclick="saveSettings()">Einstellungen speichern</button></div>
+<div id="aiStatus" class="status">Optional: Wenn Ollama nicht installiert ist, bleibt die App trotzdem nutzbar.</div>
+</div>
+<div class="card"><h2>🎨 Deine Detective-Extras</h2>
+<div class="pills"><span class="pill">📷 Multi-Foto</span><span class="pill">🔤 OCR</span><span class="pill">🧠 lokale KI</span><span class="pill">💿 Sammlung</span><span class="pill">♻️ Duplikat-Check</span><span class="pill">📊 CSV/JSON</span><span class="pill">📸 Instagram</span><span class="pill">🔎 Discogs</span><span class="pill">🧾 Matrix/Runout</span><span class="pill">📱 PWA</span></div>
+</div>
+</section>
+</main>
+<footer>Vinyl Detective 2.0 · Lokal zuerst · Keine OpenAI-API erforderlich. Discogs wird über die normale Websuche geöffnet.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);let files=[];
+$("photos").onchange=e=>{files=[...e.target.files];renderPreview()};
+function renderPreview(){$("preview").innerHTML=files.map((f,i)=>`<div class=photo><img src="${URL.createObjectURL(f)}"><span class=badge>Foto ${i+1}</span></div>`).join("")}
+function clearPhotos(){files=[];$("photos").value="";$("preview").innerHTML="";$("status").textContent="Bereit für deinen nächsten Fall."}
+function setStatus(t,c=""){$("status").className="status "+c;$("status").textContent=t}
+async function localScan(){
+ if(!files.length){setStatus("Bitte zuerst Fotos auswählen.","warn");return}
+ let text="";
+ for(let i=0;i<files.length;i++){setStatus(`🔤 Lokale OCR: Foto ${i+1}/${files.length} …`);try{let r=await Tesseract.recognize(files[i],"eng");text+="\n"+r.data.text}catch(e){}}
+ parseText(text);$("notes").value=text.trim();setStatus("✨ Fertig. Bitte erkannte Angaben kontrollieren – besonders Matrix/Runout.","ok");$("result").textContent=text.trim()||"Kein gut lesbarer Text gefunden.";
+}
+function parseText(t){
+ let b=(t.match(/\b(?:\d[\s-]?){12,14}\b/g)||[]).map(x=>x.replace(/\D/g,"")).find(x=>x.length>=12&&x.length<=14);if(b)$("barcode").value=b;
+ let cat=(t.split(/\n+/).map(x=>x.trim()).filter(Boolean).find(x=>/[A-Z]{1,6}[-. ]?\d{2,6}[A-Z]?/i.test(x)&&x.length<35));if(cat&&!$("cat").value)$("cat").value=cat;
+}
+async function aiScan(){
+ if(!files.length){setStatus("Bitte zuerst Fotos auswählen.","warn");return}
+ if(!$("ollamaEnabled").checked){setStatus("Lokale KI ist in den Einstellungen ausgeschaltet.","warn");return}
+ setStatus("🧠 Lokale KI wird angesprochen …");
+ try{
+   let prompt=`Du bist Vinyl Detective. Analysiere die Fotos eines Vinyl-Releases forensisch. Lies nur Informationen, die wirklich sichtbar sind. Erfinde niemals Matrix-/Runout-Zeichen. Liefere ausschließlich JSON mit artist, album, catalog_number, barcode, label, format, color_variant, country, year, matrix_runout, edition_notes, uncertainties.`;
+   let img=await fileToDataURL(files[0]);
+   let body={model:$("ollamaModel").value||"qwen3-vl:4b",prompt:prompt,images:[img.split(",")[1]],stream:false};
+   let r=await fetch(($("ollamaUrl").value||"http://localhost:11434").replace(/\/$/,"")+"/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+   if(!r.ok)throw new Error("Ollama nicht erreichbar");
+   let j=await r.json();let txt=j.response||"";$("result").textContent=txt;applyAI(txt);setStatus("🧠 KI-Antwort erhalten. Bitte prüfen und dann bei Discogs verifizieren.","ok");
+ }catch(e){setStatus("Lokale KI ist gerade nicht erreichbar. Die kostenlose OCR funktioniert weiterhin. Details: "+e.message,"warn")}
+}
+function fileToDataURL(f){return new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}
+function applyAI(txt){try{let m=txt.match(/\{[\s\S]*\}/);if(!m)return;let o=JSON.parse(m[0]);let map={artist:"artist",album:"album",catalog_number:"cat",barcode:"barcode",label:"label",format:"format",color_variant:"variant",country:"country",year:"year",matrix_runout:"matrix"};for(let k in map)if(o[k])$(map[k]).value=o[k];$("notes").value=[o.edition_notes,o.uncertainties].flat().filter(Boolean).join("\n")}catch(e){}}
+async function testAI(){let url=($("ollamaUrl").value||"").replace(/\/$/,"");try{let r=await fetch(url+"/api/tags");if(!r.ok)throw 0;let j=await r.json();$("aiStatus").className="status ok";$("aiStatus").textContent="🟢 Ollama erreichbar. Modelle: "+(j.models||[]).map(x=>x.name).join(", ")}catch(e){$("aiStatus").className="status warn";$("aiStatus").textContent="🟠 Ollama nicht erreichbar. Das ist okay – die App funktioniert auch ohne lokale KI."}}
+function saveSettings(){localStorage.ollamaUrl=$("ollamaUrl").value;localStorage.ollamaModel=$("ollamaModel").value;localStorage.ollamaEnabled=$("ollamaEnabled").checked;$("aiStatus").textContent="Gespeichert."}
+function loadSettings(){if(localStorage.ollamaUrl)$("ollamaUrl").value=localStorage.ollamaUrl;if(localStorage.ollamaModel)$("ollamaModel").value=localStorage.ollamaModel;if(localStorage.ollamaEnabled!=null)$("ollamaEnabled").checked=localStorage.ollamaEnabled==="true"}
+function discogs(){let q=[$("artist").value,$("album").value,$("cat").value,$("barcode").value].filter(Boolean).join(" ");if(!q){setStatus("Bitte Künstler, Album, Katalognummer oder Barcode eintragen.","warn");return}open("https://www.discogs.com/search/?q="+encodeURIComponent(q)+"&type=all","_blank")}
+function record(){return{artist:$("artist").value.trim(),album:$("album").value.trim(),catalog_number:$("cat").value.trim(),barcode:$("barcode").value.trim(),label:$("label").value.trim(),format:$("format").value.trim(),year:$("year").value.trim(),country:$("country").value.trim(),color_variant:$("variant").value.trim(),matrix_runout:$("matrix").value.trim(),quantity:$("quantity").value.trim(),notes:$("notes").value.trim(),added:new Date().toISOString()}}
+function coll(){try{return JSON.parse(localStorage.vinylCollection||"[]")}catch{return[]}}
+function save(){let r=record();if(!r.artist&&!r.album&&!r.catalog_number&&!r.barcode){setStatus("Bitte zuerst ein paar Daten eintragen.","warn");return}let c=coll();let dup=c.find(x=>(r.barcode&&x.barcode===r.barcode)||(r.catalog_number&&x.catalog_number===r.catalog_number&&r.album&&x.album===r.album));if(dup){setStatus("♻️ Möglicher Doppel-Eintrag – gespeichert wird trotzdem erst nach erneutem Klick.","warn");if(!confirm("Sieht nach einem möglichen Duplikat aus. Trotzdem speichern?"))return}c.push(r);localStorage.vinylCollection=JSON.stringify(c);setStatus("💾 In deiner Sammlung gespeichert.","ok");render()}
+function render(){let c=coll(),f=($("filter")?.value||"").toLowerCase(),s=$("sort")?.value||"artist";c=c.filter(r=>Object.values(r).join(" ").toLowerCase().includes(f));c.sort((a,b)=>s==="year"?String(b.year).localeCompare(String(a.year)):s==="added"?b.added.localeCompare(a.added):(a.artist+a.album).localeCompare(b.artist+b.album));$("list").innerHTML=c.map((r,i)=>`<div class=item><h3>${esc(r.artist||"Unbekannter Künstler")} – ${esc(r.album||"Unbekannt")}</h3><div class=muted>${esc(r.label)} · ${esc(r.year)} · ${esc(r.catalog_number)} · ${esc(r.color_variant)}</div>${r.matrix_runout?`<div class=muted>Matrix: ${esc(r.matrix_runout)}</div>`:""}<button class=smallbtn onclick="loadItem(${i})">Bearbeiten</button><button class="smallbtn alt" onclick="del(${i})">Löschen</button></div>`).join("")||"<p class=muted>Noch keine Einträge.</p>"}
+function esc(x){return String(x||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+function loadItem(i){let r=coll()[i],m={artist:"artist",album:"album",catalog_number:"cat",barcode:"barcode",label:"label",format:"format",year:"year",country:"country",color_variant:"variant",matrix_runout:"matrix",quantity:"quantity",notes:"notes"};for(let k in m)$(m[k]).value=r[k]||"";tab("detective")}
+function del(i){let c=coll();c.splice(i,1);localStorage.vinylCollection=JSON.stringify(c);render()}
+function dl(n,d,t){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([d],{type:t}));a.download=n;a.click()}
+function exportJSON(){dl("vinyl-collection.json",JSON.stringify(coll(),null,2),"application/json")}
+function exportCSV(){let k=["artist","album","catalog_number","barcode","label","format","year","country","color_variant","matrix_runout","quantity","notes"];dl("vinyl-collection.csv",k.join(",")+"\n"+coll().map(r=>k.map(x=>`"${String(r[x]||"").replaceAll('"','""')}"`).join(",")).join("\n"),"text/csv")}
+async function importJSON(e){try{let c=JSON.parse(await e.target.files[0].text());if(Array.isArray(c)){localStorage.vinylCollection=JSON.stringify(c);render();alert("Import erfolgreich.")}}catch{alert("Ungültige JSON-Datei.")}}
+function makeCaption(){let r=record();$("caption").value=`${(r.artist||"ARTIST").toUpperCase()} - ${(r.album||"ALBUM").toUpperCase()}\n————————————\n*\n${$("ah").value} ${r.year||""}\n*\n${r.color_variant||"Release"}\n*\n${$("lh").value} ${new Date().getFullYear()}\n*\n*\n*\n#vinyl #vinylcollection #recordcollection #nowspinning ${r.artist?"#"+r.artist.replace(/[^a-z0-9]/gi,"").toLowerCase():""} ${r.label?"#"+r.label.replace(/[^a-z0-9]/gi,"").toLowerCase():""}`}
+async function copyCaption(){if(!$("caption").value)makeCaption();await navigator.clipboard.writeText($("caption").value)}
+function focusField(id){$(id).focus()}
+function tab(id){["detective","collection","captions","settings"].forEach(x=>$(x).classList.toggle("hidden",x!==id));if(id==="collection")render()}
+loadSettings();render();
+</script></body></html>
