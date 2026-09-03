@@ -1,20 +1,21 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111111">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <title>Vinyl Detective</title>
-</head>
-<body>
-  <main>
-    <h1>Vinyl Detective</h1>
-    <p>Ready to identify your vinyl.</p>
-    <input id="photos" type="file" accept="image/*" multiple>
-  </main>
-  <script>
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
-  </script>
-</body>
-</html>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171717"><link rel="manifest" href="manifest.webmanifest"><title>Vinyl Detective</title><style>body{margin:0;background:#f3f0ea;color:#171717;font:16px system-ui;max-width:900px;margin:auto;padding:18px}.card{background:white;border:1px solid #ddd5ca;border-radius:18px;padding:18px;margin:14px 0}input,textarea,select,button{font:inherit;padding:11px;border-radius:10px;border:1px solid #ccc}input,textarea,select{width:100%;box-sizing:border-box;margin:5px 0 12px}button{background:#171717;color:white;border:0;cursor:pointer;margin:4px}.secondary{background:#eee9e2;color:#171717}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:650px){.grid{grid-template-columns:1fr}}.preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}.preview img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}.result{white-space:pre-wrap;background:#f7f4ef;padding:12px;border-radius:10px}.hidden{display:none}.item{border-top:1px solid #ddd5ca;padding:12px 0}.muted{color:#6b6b6b;font-size:14px}</style></head><body>
+<h1>🎵 Vinyl Detective</h1><p class="muted">Kostenlose GitHub-Pages-Version – keine OpenAI-API und kein Server.</p>
+<div><button onclick="tab('scan')">Identifizieren</button><button class="secondary" onclick="tab('collection')">Sammlung</button><button class="secondary" onclick="tab('ig')">Instagram</button></div>
+<section id="scan"><div class="card"><h2>Vinyl-Fotos</h2><p class="muted">Cover vorne/hinten, Label A/B, Matrix/Runout und Barcode.</p><input id="photos" type="file" accept="image/*" multiple><div id="preview" class="preview"></div><button onclick="ocr()">Fotos lokal nach Text durchsuchen</button><button class="secondary" onclick="clearP()">Leeren</button><p id="status" class="muted"></p></div>
+<div class="card"><h2>Daten</h2><div class="grid"><div>Künstler<input id="artist"></div><div>Album / Titel<input id="album"></div><div>Katalognummer<input id="cat"></div><div>Barcode<input id="barcode"></div><div>Label<input id="label"></div><div>Jahr<input id="year" type="number"></div><div>Land<input id="country"></div><div>Farbe / Variante<input id="variant"></div></div>Matrix / Runout<textarea id="matrix"></textarea>Notizen / Belege<textarea id="notes"></textarea><button onclick="discogs()">Bei Discogs suchen</button><button onclick="save()">In Sammlung speichern</button><div id="result" class="result">Noch kein Ergebnis.</div></div></section>
+<section id="collection" class="hidden"><div class="card"><h2>Meine Sammlung</h2><input id="filter" placeholder="Suchen…" oninput="render()"><select id="sort" onchange="render()"><option value="artist">Künstler</option><option value="year">Jahr</option><option value="added">Zuletzt hinzugefügt</option></select><button class="secondary" onclick="exportJSON()">JSON exportieren</button><button class="secondary" onclick="exportCSV()">CSV exportieren</button><input id="imp" type="file" accept=".json" onchange="imp(event)"><div id="list"></div></div></section>
+<section id="ig" class="hidden"><div class="card"><h2>Instagram Caption</h2>Künstler-Handle<input id="ah" placeholder="@artist">Label-Handle<input id="lh" placeholder="@label"><button onclick="caption()">Caption erzeugen</button><button class="secondary" onclick="copyCap()">Kopieren</button><textarea id="cap" style="min-height:190px"></textarea></div></section>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script><script>
+const $=id=>document.getElementById(id);let files=[];$("photos").onchange=e=>{files=[...e.target.files];$("preview").innerHTML=files.map(f=>`<img src="${URL.createObjectURL(f)}">`).join("")};
+function clearP(){files=[];$("photos").value="";$("preview").innerHTML=""}
+async function ocr(){if(!files.length){$("status").textContent="Bitte Fotos auswählen.";return}let t="";for(let i=0;i<files.length;i++){ $("status").textContent=`Foto ${i+1}/${files.length} wird gelesen…`;try{let r=await Tesseract.recognize(files[i],"eng");t+="\n"+r.data.text}catch(e){}}$("notes").value=t.trim();let b=(t.match(/\b(?:\d[ -]?){12,14}\b/g)||[]).map(x=>x.replace(/\D/g,"")).find(x=>x.length>=12&&x.length<=14);if(b)$("barcode").value=b;$("result").textContent=t.trim()||"Kein lesbarer Text gefunden.";$("status").textContent="Fertig – Angaben bitte kontrollieren."}
+function discogs(){let q=[$("artist").value,$("album").value,$("cat").value,$("barcode").value].filter(Boolean).join(" ");if(q)open("https://www.discogs.com/search/?q="+encodeURIComponent(q)+"&type=all","_blank")}
+function rec(){return{artist:$("artist").value,album:$("album").value,catalog_number:$("cat").value,barcode:$("barcode").value,label:$("label").value,year:$("year").value,country:$("country").value,color_variant:$("variant").value,matrix_runout:$("matrix").value,notes:$("notes").value,added:new Date().toISOString()}}
+function coll(){return JSON.parse(localStorage.vinylCollection||"[]")}function save(){let c=coll();c.push(rec());localStorage.vinylCollection=JSON.stringify(c);$("result").textContent="Gespeichert.";render()}
+function esc(x){return String(x||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+function render(){let c=coll(),f=($("filter").value||"").toLowerCase(),s=$("sort").value;c=c.filter(r=>Object.values(r).join(" ").toLowerCase().includes(f));c.sort((a,b)=>s=="year"?String(b.year).localeCompare(String(a.year)):s=="added"?b.added.localeCompare(a.added):(a.artist+a.album).localeCompare(b.artist+b.album));$("list").innerHTML=c.map((r,i)=>`<div class=item><b>${esc(r.artist)} – ${esc(r.album)}</b><div class=muted>${esc(r.label)} ${esc(r.year)} ${esc(r.catalog_number)}</div>${r.matrix_runout?"Matrix: "+esc(r.matrix_runout):""}<br><button class=secondary onclick="load(${i})">Bearbeiten</button><button onclick="del(${i})">Löschen</button></div>`).join("")||"<p class=muted>Noch keine Einträge.</p>"}
+function load(i){let r=coll()[i],m={artist:"artist",album:"album",catalog_number:"cat",barcode:"barcode",label:"label",year:"year",country:"country",color_variant:"variant",matrix_runout:"matrix",notes:"notes"};for(let k in m)$(m[k]).value=r[k]||"";tab("scan")}function del(i){let c=coll();c.splice(i,1);localStorage.vinylCollection=JSON.stringify(c);render()}
+function dl(n,d,t){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([d],{type:t}));a.download=n;a.click()}function exportJSON(){dl("vinyl-collection.json",JSON.stringify(coll(),null,2),"application/json")}function exportCSV(){let k=["artist","album","catalog_number","barcode","label","year","country","color_variant","matrix_runout","notes"];dl("vinyl-collection.csv",k.join(",")+"\n"+coll().map(r=>k.map(x=>`"${String(r[x]||"").replaceAll('"','""')}"`).join(",")).join("\n"),"text/csv")}async function imp(e){try{let c=JSON.parse(await e.target.files[0].text());if(Array.isArray(c)){localStorage.vinylCollection=JSON.stringify(c);render()}}catch{alert("Ungültige JSON-Datei.")}}
+function caption(){let r=rec();$("cap").value=`${(r.artist||"ARTIST").toUpperCase()} - ${(r.album||"ALBUM").toUpperCase()}\n————————————\n*\n${$("ah").value} ${r.year||""}\n*\n${r.color_variant||r.country||"Release"}\n*\n${$("lh").value} ${new Date().getFullYear()}\n*\n*\n*\n#vinyl #vinylcollection #recordcollection #nowspinning`}async function copyCap(){if(!$("cap").value)caption();await navigator.clipboard.writeText($("cap").value)}
+function tab(id){["scan","collection","ig"].forEach(x=>$(x).classList.toggle("hidden",x!=id));if(id=="collection")render()}render();
+</script></body></html>

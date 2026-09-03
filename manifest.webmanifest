@@ -1,9 +1,1 @@
-{
-  "name": "Vinyl Detective",
-  "short_name": "Vinyl Detective",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#111111",
-  "icons": []
-}
+{"name":"Vinyl Detective","short_name":"Vinyl Detective","start_url":"./","display":"standalone","background_color":"#f3f0ea","theme_color":"#171717"}

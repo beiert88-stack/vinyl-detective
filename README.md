@@ -1,9 +1,3 @@
 # Vinyl Detective
 
-Mobile vinyl identification PWA using image recognition/OCR and Discogs lookup.
-
-## Development
-1. Copy `.env.example` to `.env`.
-2. Add API keys only to `.env`.
-3. Run `npm install`.
-4. Run `npm start`.
+Statische GitHub-Pages-Version ohne OpenAI-API. OCR läuft im Browser über Tesseract.js. Discogs wird über die normale Websuche geöffnet. Sammlung wird lokal im Browser gespeichert.
