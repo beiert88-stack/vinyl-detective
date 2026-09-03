@@ -2,577 +2,400 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ff4f8b">
-<link rel="manifest" href="manifest.webmanifest">
-
-<title>Vinyl Detective 2.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#20112f">
+<title>Vinyl Detective</title>
 
 <style>
 :root{
-  --bg:#120d20;
-  --card:#211632;
-  --card2:#2b1d43;
-  --text:#fff8fc;
-  --muted:#b9aec7;
-  --pink:#ff4f8b;
-  --orange:#ff9b42;
-  --yellow:#ffe05b;
-  --cyan:#4de1ff;
-  --purple:#9d72ff;
-  --green:#52e39b;
-  --line:#46345c;
+  --bg1:#29113d;
+  --bg2:#111b2d;
+  --panel:#151127;
+  --panel2:#172b43;
+  --line:#56316d;
+  --accent:#ff4f79;
+  --accent2:#5d8dff;
+  --text:#fff;
+  --muted:#d7cbe4;
+  --input:#0e0a1c;
+  --gold:#a98a1d;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
   color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at 10% 0%,#64205d 0%,#28143d 30%,#120d20 70%);
-}
-
-header{
-  max-width:1050px;
-  margin:auto;
-  padding:28px 18px 10px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.logo{
-  width:60px;
-  height:60px;
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  font-size:32px;
-  background:linear-gradient(
-    135deg,
-    var(--pink),
-    var(--orange),
-    var(--yellow)
-  );
-  box-shadow:0 12px 35px #ff4f8b55;
-}
-
-h1{
-  margin:0;
-  font-size:31px;
-}
-
-header p{
-  margin:4px 0;
-  color:var(--muted);
+  background:linear-gradient(110deg,var(--bg1),#1b1535 45%,var(--bg2));
 }
 
 main{
-  max-width:1050px;
+  max-width:1100px;
   margin:auto;
-  padding:0 18px 50px;
+  padding:8px 24px 50px
+}
+
+header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px
+}
+
+.logo{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#ff4d78,#ffc94d);
+  display:grid;
+  place-items:center;
+  font-size:31px
+}
+
+h1{
+  font-size:31px;
+  margin:0;
+  font-weight:800
+}
+
+.tag{
+  color:#c9bdd8;
+  margin-top:4px
 }
 
 nav{
   display:flex;
   gap:8px;
-  overflow:auto;
-  padding:12px 0;
+  flex-wrap:wrap;
+  margin-bottom:17px
+}
+
+nav button{
+  width:auto;
+  background:transparent;
+  border:1px solid var(--line);
+  padding:12px 18px
+}
+
+nav button.active{
+  background:var(--accent);
+  border-color:var(--accent)
 }
 
 button{
-  border:0;
+  border:1px solid transparent;
   border-radius:13px;
-  padding:12px 16px;
-  background:linear-gradient(135deg,var(--pink),#ff6d61);
+  padding:13px 18px;
+  background:var(--accent);
   color:white;
-  font:inherit;
+  font-size:16px;
   font-weight:800;
-  cursor:pointer;
-  box-shadow:0 8px 22px #ff4f8b25;
-}
-
-button.alt{
-  background:var(--card2);
-  border:1px solid var(--line);
-  box-shadow:none;
+  cursor:pointer
 }
 
 button.blue{
-  background:linear-gradient(135deg,var(--cyan),#627cff);
-  color:#101020;
+  background:var(--accent2)
 }
 
-button.good{
-  background:linear-gradient(135deg,var(--green),#22b9a5);
+button.dark{
+  background:#25183c;
+  border-color:#52326a
 }
 
 .card{
-  background:linear-gradient(145deg,#211632ee,#171125ee);
-  border:1px solid var(--line);
+  border:1px solid #53386c;
   border-radius:22px;
   padding:19px;
   margin:14px 0;
-  box-shadow:0 18px 50px #0007;
-}
-
-.card h2{
-  margin:0 0 8px;
+  background:rgba(18,12,34,.84)
 }
 
 .hero{
-  background:
-    linear-gradient(
-      120deg,
-      #421747,
-      #211637 55%,
-      #153348
-    );
+  background:linear-gradient(
+    110deg,
+    rgba(42,20,61,.9),
+    rgba(22,45,68,.92)
+  )
 }
 
-.muted{
+h2{
+  margin:0 0 14px;
+  font-size:24px
+}
+
+.intro{
   color:var(--muted);
-  font-size:14px;
+  margin:0 0 14px
+}
+
+.upload{
+  background:#0d0919;
+  border:1px solid #563c6b;
+  border-radius:13px;
+  padding:12px;
+  margin-bottom:15px
+}
+
+.actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap
+}
+
+.actions button{
+  width:auto
+}
+
+.status{
+  border:1px solid var(--gold);
+  border-radius:13px;
+  padding:12px;
+  margin-top:10px;
+  background:#21172e
 }
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  grid-template-columns:1fr 1fr;
+  gap:18px 10px
 }
 
-@media(max-width:700px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-}
-
-label,
-.fieldtitle{
+.field label{
   display:block;
-  font-weight:750;
-  margin:8px 0 5px;
+  font-weight:800;
+  margin-bottom:8px
 }
 
-input,
-textarea,
-select{
+.field input,
+.field select,
+.field textarea{
   width:100%;
-  padding:12px;
-  border:1px solid #49375f;
+  background:var(--input);
+  border:1px solid #51366a;
   border-radius:12px;
-  background:#120d20;
-  color:var(--text);
-  font:inherit;
+  color:#fff;
+  padding:13px;
+  font-size:16px
 }
 
 textarea{
-  min-height:85px;
+  min-height:100px;
+  resize:vertical
 }
 
-.row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:10px;
-}
-
-.preview{
+.matrix{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(125px,1fr));
-  gap:10px;
-  margin-top:12px;
+  grid-template-columns:1fr 1fr;
+  gap:12px
 }
 
-.photo{
-  position:relative;
+.small{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.45
 }
 
-.preview img{
-  width:100%;
-  aspect-ratio:1;
-  object-fit:cover;
-  border-radius:15px;
-  border:1px solid var(--line);
+.resultbox{
+  min-height:100px;
+  color:#d9cfe2
 }
 
-.badge{
-  position:absolute;
-  left:7px;
-  bottom:7px;
-  background:#000b;
-  border-radius:9px;
-  padding:4px 7px;
-  font-size:12px;
+.settings{
+  display:none
 }
 
-.status{
-  padding:10px 12px;
-  border-radius:12px;
-  background:#251a3d;
-  margin-top:10px;
+.settings.open{
+  display:block
 }
 
-.status.ok{
-  border:1px solid #2c8b68;
-}
-
-.status.warn{
-  border:1px solid #9b7a34;
-}
-
-.result{
-  white-space:pre-wrap;
-  background:#110c1e;
-  border:1px solid var(--line);
-  padding:14px;
-  border-radius:14px;
-  min-height:65px;
-}
-
-.hidden{
-  display:none;
-}
-
-.item{
-  padding:14px 0;
-  border-top:1px solid var(--line);
-}
-
-.item h3{
-  margin:0 0 3px;
-}
-
-.toggle{
+.swatches{
   display:flex;
-  align-items:center;
   gap:10px;
-  background:#171024;
-  border:1px solid var(--line);
-  padding:10px;
-  border-radius:12px;
+  flex-wrap:wrap
 }
 
-.toggle input{
-  width:auto;
+.swatch{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:2px solid #fff;
+  cursor:pointer
 }
 
-.pill{
-  padding:6px 9px;
-  border-radius:99px;
-  background:#302044;
-  border:1px solid #48345d;
-  color:#ddd2e9;
-  font-size:12px;
-}
+@media(max-width:700px){
+  main{
+    padding:8px 14px 40px
+  }
 
-.pills{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
+  .grid,
+  .matrix{
+    grid-template-columns:1fr
+  }
 
-footer{
-  max-width:1050px;
-  margin:auto;
-  padding:0 18px 35px;
-  color:#8e829e;
-  font-size:12px;
-}
-
-.camera-box{
-  border:2px dashed #67447e;
-  border-radius:18px;
-  padding:15px;
-  text-align:center;
-  margin-top:10px;
-  background:#191026;
-}
-
-.camera-icon{
-  font-size:42px;
+  h1{
+    font-size:27px
+  }
 }
 </style>
 </head>
 
 <body>
 
+<main>
+
 <header>
+  <div class="logo">💿</div>
 
-<div class="brand">
-
-<div class="logo">
-💿
-</div>
-
-<div>
-<h1>Vinyl Detective</h1>
-<p>Dein bunter Platten-Spürhund · 2.0</p>
-</div>
-
-</div>
-
+  <div>
+    <h1>Vinyl Detective</h1>
+    <div class="tag">
+      Dein bunter Platten-Spürhund · 2.0
+    </div>
+  </div>
 </header>
 
-<main>
 
 <nav>
 
-<button onclick="tab('detective')">
-🔎 Detective
-</button>
+  <button class="active">
+    🔎 Detective
+  </button>
 
-<button class="alt" onclick="tab('collection')">
-💿 Sammlung
-</button>
+  <button>
+    💿 Sammlung
+  </button>
 
-<button class="alt" onclick="tab('captions')">
-📸 Instagram
-</button>
+  <button>
+    📸 Instagram
+  </button>
 
-<button class="alt" onclick="tab('settings')">
-🧠 KI & Einstellungen
-</button>
+  <button id="settingsBtn">
+    🧠 KI & Einstellungen
+  </button>
 
 </nav>
 
 
-<!-- DETECTIVE -->
+<!-- NEUER FALL -->
 
-<section id="detective">
+<section class="card hero">
 
-<div class="card hero">
+<h2>🕵️ Neuer Fall</h2>
 
-<h2>🕵️ Neuer Vinyl-Fall</h2>
-
-<p class="muted">
-Fotografiere deine Platte oder wähle vorhandene Bilder aus.
-Am besten: Cover vorne/hinten, Label A/B, Matrix/Runout und Barcode.
+<p class="intro">
+Je mehr Fotos, desto besser:
+Cover vorne/hinten, Label A/B, Matrix/Runout,
+Barcode und Inserts.
 </p>
 
 
-<div class="camera-box">
-
-<div class="camera-icon">
-📷
-</div>
-
-<p>
-<strong>Vinyl direkt fotografieren</strong>
-</p>
-
-<button
-type="button"
-onclick="openCamera()">
-📷 Kamera öffnen
-</button>
-
-</div>
-
-
-<div class="row">
-
-<button
-type="button"
-class="alt"
-onclick="document.getElementById('photos').click()">
-🖼️ Bilder aus Galerie auswählen
-</button>
-
-</div>
-
+<div class="upload">
 
 <input
-id="photos"
-type="file"
-accept="image/*"
-multiple
-style="display:none">
+  id="photos"
+  type="file"
+  accept="image/*"
+  multiple
+>
+
+</div>
 
 
-<input
-id="camera"
-type="file"
-accept="image/*"
-capture="environment"
-style="display:none">
+<div class="actions">
 
-
-<div id="preview" class="preview"></div>
-
-
-<div class="row">
-
-<button onclick="localScan()">
-✨ Kostenlosen Scan starten
+<button id="localBtn">
+  🧩 Lokal lesen
 </button>
 
-<button
-class="blue"
-onclick="aiScan()">
-🧠 Lokale KI-Analyse
+<button class="blue" id="aiBtn">
+  🧠 KI-Analyse
 </button>
 
-<button
-class="alt"
-onclick="clearPhotos()">
-Leeren
+<button class="dark" id="clearBtn">
+  Leeren
 </button>
 
 </div>
 
 
-<div id="status" class="status">
+<div class="status" id="status">
 Bereit für deinen nächsten Fall.
 </div>
 
-</div>
+</section>
 
 
+<!-- ERKANNTES EXEMPLAR -->
 
-<!-- DATEN -->
-
-<div class="card">
+<section class="card">
 
 <h2>🎯 Erkanntes Exemplar</h2>
 
 <div class="grid">
 
-<div>
+<div class="field">
 <label>Künstler</label>
 <input id="artist">
 </div>
 
-<div>
+<div class="field">
 <label>Album / Titel</label>
 <input id="album">
 </div>
 
-<div>
+<div class="field">
 <label>Katalognummer</label>
-<input id="cat">
+<input id="catalog">
 </div>
 
-<div>
+<div class="field">
 <label>Barcode</label>
 <input id="barcode">
 </div>
 
-<div>
+<div class="field">
 <label>Label</label>
 <input id="label">
 </div>
 
-<div>
+<div class="field">
 <label>Jahr</label>
-<input id="year" type="number">
+<input id="year">
 </div>
 
-<div>
+<div class="field">
 <label>Land</label>
 <input id="country">
 </div>
 
-<div>
+<div class="field">
 <label>Format</label>
-<input id="format" placeholder='LP, 7", 12" …'>
+<input id="format" placeholder="LP, 7&quot; ...">
 </div>
 
-<div>
+<div class="field">
 <label>Farbe / Variante</label>
 <input id="variant">
 </div>
 
-<div>
+<div class="field">
 <label>Pressungsmenge</label>
+<input id="quantity">
+</div>
+
+<div class="field">
+<label>Discogs Release-ID</label>
+<input id="releaseId">
+</div>
+
+<div class="field">
+<label>Confidence Score</label>
 <input
-id="quantity"
-placeholder="Nur wenn ausdrücklich belegt">
-</div>
-
-</div>
-
-
-<label>Matrix / Runout</label>
-
-<textarea
-id="matrix"
-placeholder="Nur Zeichen eintragen, die wirklich lesbar sind."></textarea>
-
-
-<label>Edition / Belege / Unsicherheiten</label>
-
-<textarea id="notes"></textarea>
-
-
-<div class="row">
-
-<button onclick="discogs()">
-🌐 Discogs öffnen
-</button>
-
-<button
-class="good"
-onclick="save()">
-💾 In Sammlung speichern
-</button>
-
-</div>
-
-
-<div
-id="result"
-class="result"
-style="margin-top:10px">
-
-Noch keine Analyse.
-
-</div>
-
-</div>
-
-
-
-<!-- EXTRAS -->
-
-<div class="card">
-
-<h2>🧩 Schnellaktionen</h2>
-
-<div class="row">
-
-<button
-class="alt"
-onclick="focusField('matrix')">
-Matrix prüfen
-</button>
-
-<button
-class="alt"
-onclick="focusField('barcode')">
-Barcode prüfen
-</button>
-
-<button
-class="alt"
-onclick="focusField('cat')">
-Katalognummer prüfen
-</button>
-
-<button
-class="alt"
-onclick="makeCaption()">
-Caption bauen
-</button>
-
+  id="confidence"
+  placeholder="z. B. 98 %"
+>
 </div>
 
 </div>
@@ -580,1584 +403,421 @@ Caption bauen
 </section>
 
 
+<!-- RUNOUT / MATRIX -->
 
-<!-- SAMMLUNG -->
+<section class="card">
 
-<section
-id="collection"
-class="hidden">
+<h2>🔬 Runout / Matrix</h2>
 
-<div class="card">
-
-<h2>💿 Deine Sammlung</h2>
-
-<input
-id="filter"
-placeholder="Künstler, Album, Label, Katalognummer …"
-oninput="render()">
+<p class="intro">
+Exakte Angaben der Platte eingeben.
+Die App ergänzt keine Zeichen.
+</p>
 
 
-<select
-id="sort"
-onchange="render()">
+<div class="matrix">
 
-<option value="artist">
-A–Z
-</option>
+<div class="field">
 
-<option value="year">
-Jahr
-</option>
-
-<option value="added">
-Zuletzt hinzugefügt
-</option>
-
-</select>
-
-
-<div class="row">
-
-<button
-class="alt"
-onclick="exportJSON()">
-JSON exportieren
-</button>
-
-<button
-class="alt"
-onclick="exportCSV()">
-CSV exportieren
-</button>
-
-</div>
-
-
-<label class="toggle">
-
-JSON importieren
-
-<input
-id="imp"
-type="file"
-accept=".json"
-onchange="importJSON(event)">
-
+<label>
+Runout / Matrix A
 </label>
 
+<input
+  id="matrixA"
+  placeholder="Seite A"
+>
 
-<div id="list"></div>
+</div>
 
+
+<div class="field">
+
+<label>
+Runout / Matrix B
+</label>
+
+<input
+  id="matrixB"
+  placeholder="Seite B"
+>
+
+</div>
+
+</div>
+
+
+<div class="actions" style="margin-top:12px">
+
+<button id="runoutBtn">
+🔎 Runout A + B suchen
+</button>
+
+</div>
+
+
+<div class="status" id="runoutStatus">
+Noch keine Runout-Suche gestartet.
 </div>
 
 </section>
 
+
+<!-- ALTERNATIVEN -->
+
+<section class="card">
+
+<h2>🔎 Alternativen</h2>
+
+<div
+  class="resultbox"
+  id="alternatives"
+>
+Bis zu 3 mögliche Pressungen werden hier angezeigt,
+wenn kein eindeutiger Treffer vorliegt.
+</div>
+
+</section>
 
 
 <!-- INSTAGRAM -->
 
-<section
-id="captions"
-class="hidden">
+<section class="card">
 
-<div class="card">
-
-<h2>📸 Instagram Studio</h2>
-
-<p class="muted">
-Kein automatisches Posten – du entscheidest, was veröffentlicht wird.
-</p>
-
+<h2>📸 Instagram</h2>
 
 <div class="grid">
 
-<div>
+<div class="field">
 
-<label>Künstler-Instagram</label>
-
-<input
-id="ah"
-placeholder="@artist">
-
-</div>
-
-
-<div>
-
-<label>Label-Instagram</label>
+<label>
+Künstler-Instagram
+</label>
 
 <input
-id="lh"
-placeholder="@label">
+  id="artistIg"
+  placeholder="@handle"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Label-Instagram
+</label>
+
+<input
+  id="labelIg"
+  placeholder="@label"
+>
 
 </div>
 
 </div>
 
 
-<div class="row">
-
-<button onclick="makeCaption()">
-✨ Caption erzeugen
-</button>
-
-<button
-class="alt"
-onclick="copyCaption()">
-Kopieren
-</button>
-
-</div>
-
-
-<textarea
-id="caption"
-style="min-height:230px;margin-top:10px">
-</textarea>
-
-</div>
-
-</section>
-
-
-
-<!-- SETTINGS -->
-
-<section
-id="settings"
-class="hidden">
-
-<div class="card hero">
-
-<h2>🧠 KI-Modus</h2>
-
-<p>
-Diese App besitzt zwei Ebenen:
-<strong>kostenlose lokale OCR</strong> und optional eine
-<strong>lokale KI</strong>.
+<p class="small">
+Caption bleibt reiner Text.
+Keine automatische Veröffentlichung.
 </p>
 
 
-<div class="toggle">
-
-<input
-id="ollamaEnabled"
-type="checkbox"
-checked>
-
-<span>
-Lokale KI verwenden, wenn verfügbar
-</span>
-
-</div>
-
-
-<label>
-Ollama-Adresse
-</label>
-
-<input
-id="ollamaUrl"
-value="http://localhost:11434">
-
-
-<label>
-Vision-Modell
-</label>
-
-<input
-id="ollamaModel"
-value="qwen3-vl:4b">
-
-
-<div class="row">
-
-<button
-class="blue"
-onclick="testAI()">
-🧪 KI testen
-</button>
-
-<button
-class="alt"
-onclick="saveSettings()">
-Einstellungen speichern
-</button>
-
-</div>
+<textarea
+  id="caption"
+  placeholder="Hier erscheint später deine Caption …"
+></textarea>
 
 
 <div
-id="aiStatus"
-class="status">
+  class="actions"
+  style="margin-top:10px"
+>
 
-Optional: Wenn Ollama nicht installiert ist,
-bleibt die App trotzdem nutzbar.
+<button id="copyBtn">
+📋 Caption kopieren
+</button>
 
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-<h2>🎨 Detective-Werkzeuge</h2>
-
-<div class="pills">
-
-<span class="pill">📷 Kamera</span>
-<span class="pill">🖼️ Galerie</span>
-<span class="pill">🔤 OCR</span>
-<span class="pill">🧠 lokale KI</span>
-<span class="pill">💿 Sammlung</span>
-<span class="pill">♻️ Duplikat-Check</span>
-<span class="pill">📊 CSV</span>
-<span class="pill">📦 JSON</span>
-<span class="pill">📸 Instagram</span>
-<span class="pill">🔎 Discogs</span>
-<span class="pill">🧾 Matrix</span>
-<span class="pill">📱 PWA</span>
-
-</div>
+<button
+  class="dark"
+  id="newCaptionBtn"
+>
+↻ Neu erzeugen
+</button>
 
 </div>
 
 </section>
+
+
+<!-- EINSTELLUNGEN -->
+
+<section
+  class="card settings"
+  id="settings"
+>
+
+<h2>🎨 Optik anpassen</h2>
+
+<p class="intro">
+Wähle eine Akzentfarbe für deine Vinyl Detective App.
+</p>
+
+
+<div class="swatches">
+
+<div
+  class="swatch"
+  style="background:#ff4f79"
+  data-color="#ff4f79"
+></div>
+
+<div
+  class="swatch"
+  style="background:#5d8dff"
+  data-color="#5d8dff"
+></div>
+
+<div
+  class="swatch"
+  style="background:#48d597"
+  data-color="#48d597"
+></div>
+
+<div
+  class="swatch"
+  style="background:#ffc94d"
+  data-color="#ffc94d"
+></div>
+
+<div
+  class="swatch"
+  style="background:#b86cff"
+  data-color="#b86cff"
+></div>
+
+</div>
+
+</section>
+
+
+<!-- SAMMLUNG -->
+
+<section class="card">
+
+<h2>⚙️ Sammlung</h2>
+
+<p class="small">
+Lokale Sammlung, Duplikaterkennung,
+Filter/Sortierung sowie JSON/CSV Export und Import.
+</p>
+
+</section>
+
 
 </main>
 
 
-<footer>
-
-Vinyl Detective 2.0 · Lokal zuerst · Keine OpenAI-API erforderlich.
-
-</footer>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
 <script>
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
 
-let files = [];
 
+/* EINSTELLUNGEN */
 
-/* =========================
-   FOTO / KAMERA
-========================= */
+$("settingsBtn").onclick = () => {
 
-$("photos").onchange = e => {
-
-files = [
-...files,
-...e.target.files
-];
-
-renderPreview();
+  $("settings").classList.toggle("open");
 
 };
 
 
-$("camera").onchange = e => {
+/* FARBEN */
 
-if(e.target.files.length){
+document
+  .querySelectorAll(".swatch")
+  .forEach(s => {
 
-files = [
-...files,
-...e.target.files
-];
+    s.onclick = () => {
 
-renderPreview();
+      document.documentElement.style
+        .setProperty(
+          "--accent",
+          s.dataset.color
+        );
 
-setStatus(
-"📷 Foto hinzugefügt. Du kannst weitere Fotos aufnehmen.",
-"ok"
-);
+    };
 
-}
+  });
 
-e.target.value = "";
+
+/* LEEREN */
+
+$("clearBtn").onclick = () => {
+
+  document
+    .querySelectorAll("input,textarea")
+    .forEach(x => x.value = "");
+
+  $("status").textContent =
+    "Bereit für deinen nächsten Fall.";
+
+  $("runoutStatus").textContent =
+    "Noch keine Runout-Suche gestartet.";
 
 };
 
 
-function openCamera(){
+/* LOKAL LESEN */
 
-$("camera").click();
+$("localBtn").onclick = () => {
 
-}
-
-
-function renderPreview(){
-
-$("preview").innerHTML =
-files.map(
-(f,i) => `
-
-<div class="photo">
-
-<img src="${URL.createObjectURL(f)}">
-
-<span class="badge">
-Foto ${i+1}
-</span>
-
-</div>
-
-`
-).join("");
-
-}
-
-
-function clearPhotos(){
-
-files = [];
-
-$("photos").value = "";
-
-$("camera").value = "";
-
-$("preview").innerHTML = "";
-
-setStatus(
-"Bereit für deinen nächsten Fall."
-);
-
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-function setStatus(text,type=""){
-
-$("status").className =
-"status " + type;
-
-$("status").textContent = text;
-
-}
-
-
-/* =========================
-   OCR
-========================= */
-
-async function localScan(){
-
-if(!files.length){
-
-setStatus(
-"Bitte zuerst Fotos auswählen.",
-"warn"
-);
-
-return;
-
-}
-
-let text = "";
-
-for(
-let i=0;
-i<files.length;
-i++
-){
-
-setStatus(
-`🔤 Foto ${i+1}/${files.length} wird gelesen …`
-);
-
-try{
-
-let result =
-await Tesseract.recognize(
-files[i],
-"eng"
-);
-
-text +=
-"\n" +
-result.data.text;
-
-}catch(error){
-
-console.log(error);
-
-}
-
-}
-
-parseText(text);
-
-$("notes").value =
-text.trim();
-
-$("result").textContent =
-text.trim() ||
-"Kein gut lesbarer Text gefunden.";
-
-setStatus(
-"✨ Fertig. Bitte erkannte Angaben kontrollieren.",
-"ok"
-);
-
-}
-
-
-/* =========================
-   TEXT AUSWERTEN
-========================= */
-
-function parseText(text){
-
-let barcode =
-(
-text.match(
-/\b(?:\d[\s-]?){12,14}\b/g
-) || []
-)
-.map(
-x => x.replace(/\D/g,"")
-)
-.find(
-x =>
-x.length >= 12 &&
-x.length <= 14
-);
-
-if(barcode){
-
-$("barcode").value =
-barcode;
-
-}
-
-
-let lines =
-text
-.split(/\n+/)
-.map(x => x.trim())
-.filter(Boolean);
-
-
-let possibleCatalog =
-lines.find(
-x =>
-/[A-Z]{1,6}[-. ]?\d{2,6}[A-Z]?/i
-.test(x)
-&&
-x.length < 35
-);
-
-
-if(
-possibleCatalog &&
-!$("cat").value
-){
-
-$("cat").value =
-possibleCatalog;
-
-}
-
-}
-
-
-/* =========================
-   LOKALE KI / OLLAMA
-========================= */
-
-async function aiScan(){
-
-if(!files.length){
-
-setStatus(
-"Bitte zuerst Fotos auswählen.",
-"warn"
-);
-
-return;
-
-}
-
-
-if(
-!$("ollamaEnabled").checked
-){
-
-setStatus(
-"Lokale KI ist ausgeschaltet.",
-"warn"
-);
-
-return;
-
-}
-
-
-setStatus(
-"🧠 Lokale KI wird angesprochen …"
-);
-
-
-try{
-
-let prompt = `
-
-Du bist Vinyl Detective.
-
-Analysiere dieses Foto eines Vinyl-Releases.
-
-Lies ausschließlich Informationen,
-die tatsächlich sichtbar sind.
-
-Erfinde niemals Zeichen.
-
-Besonders wichtig:
-
-- Künstler
-- Album
-- Katalognummer
-- Barcode
-- Label
-- Format
-- Vinylfarbe
-- Land
-- Jahr
-- Edition
-- Matrix / Runout
-
-Matrix- und Runout-Zeichen dürfen
-NIEMALS geraten werden.
-
-Antworte als JSON.
-
-Felder:
-
-artist
-album
-catalog_number
-barcode
-label
-format
-color_variant
-country
-year
-matrix_runout
-edition_notes
-uncertainties
-
-`;
-
-
-let image =
-await fileToDataURL(
-files[0]
-);
-
-
-let body = {
-
-model:
-$("ollamaModel").value ||
-"qwen3-vl:4b",
-
-prompt,
-
-images:[
-image.split(",")[1]
-],
-
-stream:false
+  $("status").textContent =
+    "Lokale Auslesung vorbereitet. " +
+    "Die Discogs-Anbindung wird serverseitig ergänzt.";
 
 };
 
 
-let response =
-await fetch(
-(
-$("ollamaUrl").value ||
-"http://localhost:11434"
-)
-.replace(/\/$/,"")
-+
-"/api/generate",
-{
-method:"POST",
-headers:{
-"Content-Type":
-"application/json"
-},
-body:
-JSON.stringify(body)
-}
-);
+/* KI */
 
+$("aiBtn").onclick = () => {
 
-if(!response.ok){
-
-throw new Error(
-"Ollama nicht erreichbar"
-);
-
-}
-
-
-let data =
-await response.json();
-
-
-let answer =
-data.response || "";
-
-
-$("result").textContent =
-answer;
-
-
-applyAI(answer);
-
-
-setStatus(
-"🧠 KI-Antwort erhalten. Bitte prüfen und anschließend bei Discogs verifizieren.",
-"ok"
-);
-
-
-}catch(error){
-
-setStatus(
-"🟠 Lokale KI ist momentan nicht erreichbar. Die kostenlose OCR funktioniert weiterhin.",
-"warn"
-);
-
-}
-
-}
-
-
-/* =========================
-   BILD IN DATA URL
-========================= */
-
-function fileToDataURL(file){
-
-return new Promise(
-(resolve,reject)=>{
-
-let reader =
-new FileReader();
-
-reader.onload =
-() =>
-resolve(
-reader.result
-);
-
-reader.onerror =
-reject;
-
-reader.readAsDataURL(
-file
-);
-
-}
-);
-
-}
-
-
-/* =========================
-   KI ERGEBNIS
-========================= */
-
-function applyAI(text){
-
-try{
-
-let match =
-text.match(
-/\{[\s\S]*\}/
-);
-
-if(!match)
-return;
-
-
-let data =
-JSON.parse(
-match[0]
-);
-
-
-let fields = {
-
-artist:"artist",
-
-album:"album",
-
-catalog_number:"cat",
-
-barcode:"barcode",
-
-label:"label",
-
-format:"format",
-
-color_variant:"variant",
-
-country:"country",
-
-year:"year",
-
-matrix_runout:"matrix"
+  $("status").textContent =
+    "KI-Analyse ist als optionale Funktion vorbereitet.";
 
 };
 
 
-for(
-let key in fields
-){
+/* RUNOUT / MATRIX */
 
-if(data[key]){
+$("runoutBtn").onclick = async () => {
 
-$(fields[key]).value =
-data[key];
+  const a =
+    $("matrixA").value.trim();
 
-}
+  const b =
+    $("matrixB").value.trim();
 
-}
 
+  if (!a && !b) {
 
-$("notes").value = [
+    $("runoutStatus").textContent =
+      "Bitte Runout A oder Runout B eingeben.";
 
-data.edition_notes,
+    return;
 
-data.uncertainties
+  }
 
-]
-.flat()
-.filter(Boolean)
-.join("\n");
 
-}catch(error){
+  $("runoutStatus").textContent =
+    "Suche wird vorbereitet …";
 
-console.log(
-"KI JSON konnte nicht gelesen werden"
-);
 
-}
+  try {
 
-}
+    const r = await fetch(
+      "/api/search",
+      {
+        method:"POST",
 
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
 
-/* =========================
-   OLLAMA TEST
-========================= */
+        body:JSON.stringify({
+          matrixA:a,
+          matrixB:b
+        })
+      }
+    );
 
-async function testAI(){
 
-let url =
-(
-$("ollamaUrl").value ||
-""
-)
-.replace(/\/$/,"");
+    if (!r.ok)
+      throw new Error();
 
 
-try{
+    const d =
+      await r.json();
 
-let response =
-await fetch(
-url + "/api/tags"
-);
 
+    $("runoutStatus").textContent =
+      (d.results?.length || 0) +
+      " mögliche Treffer gefunden.";
 
-if(!response.ok)
-throw new Error();
 
+  }
 
-let data =
-await response.json();
+  catch(e) {
 
+    $("runoutStatus").textContent =
+      "Discogs-Suche wird als nächster " +
+      "Server-Schritt angeschlossen.";
 
-$("aiStatus").className =
-"status ok";
-
-
-$("aiStatus").textContent =
-"🟢 Ollama erreichbar. Modelle: "
-+
-(data.models || [])
-.map(
-x => x.name
-)
-.join(", ");
-
-
-}catch(error){
-
-$("aiStatus").className =
-"status warn";
-
-
-$("aiStatus").textContent =
-"🟠 Ollama nicht erreichbar. Das ist okay – die App funktioniert auch ohne lokale KI.";
-
-}
-
-}
-
-
-function saveSettings(){
-
-localStorage.ollamaUrl =
-$("ollamaUrl").value;
-
-localStorage.ollamaModel =
-$("ollamaModel").value;
-
-localStorage.ollamaEnabled =
-$("ollamaEnabled").checked;
-
-$("aiStatus").textContent =
-"Gespeichert.";
-
-}
-
-
-function loadSettings(){
-
-if(
-localStorage.ollamaUrl
-){
-
-$("ollamaUrl").value =
-localStorage.ollamaUrl;
-
-}
-
-if(
-localStorage.ollamaModel
-){
-
-$("ollamaModel").value =
-localStorage.ollamaModel;
-
-}
-
-if(
-localStorage.ollamaEnabled !==
-undefined
-){
-
-$("ollamaEnabled").checked =
-localStorage.ollamaEnabled ===
-"true";
-
-}
-
-}
-
-
-/* =========================
-   DISCOGS
-========================= */
-
-function discogs(){
-
-let query = [
-
-$("artist").value,
-
-$("album").value,
-
-$("cat").value,
-
-$("barcode").value
-
-]
-.filter(Boolean)
-.join(" ");
-
-
-if(!query){
-
-setStatus(
-"Bitte Künstler, Album, Katalognummer oder Barcode eintragen.",
-"warn"
-);
-
-return;
-
-}
-
-
-window.open(
-
-"https://www.discogs.com/search/?q="
-+
-encodeURIComponent(query)
-+
-"&type=all",
-
-"_blank"
-
-);
-
-}
-
-
-/* =========================
-   RECORD
-========================= */
-
-function record(){
-
-return{
-
-artist:
-$("artist").value.trim(),
-
-album:
-$("album").value.trim(),
-
-catalog_number:
-$("cat").value.trim(),
-
-barcode:
-$("barcode").value.trim(),
-
-label:
-$("label").value.trim(),
-
-format:
-$("format").value.trim(),
-
-year:
-$("year").value.trim(),
-
-country:
-$("country").value.trim(),
-
-color_variant:
-$("variant").value.trim(),
-
-matrix_runout:
-$("matrix").value.trim(),
-
-quantity:
-$("quantity").value.trim(),
-
-notes:
-$("notes").value.trim(),
-
-added:
-new Date().toISOString()
-
-};
-
-}
-
-
-/* =========================
-   SAMMLUNG
-========================= */
-
-function collection(){
-
-try{
-
-return JSON.parse(
-localStorage.vinylCollection ||
-"[]"
-);
-
-}catch{
-
-return[];
-
-}
-
-}
-
-
-function save(){
-
-let item =
-record();
-
-
-if(
-!item.artist &&
-!item.album &&
-!item.catalog_number &&
-!item.barcode
-){
-
-setStatus(
-"Bitte zuerst ein paar Daten eintragen.",
-"warn"
-);
-
-return;
-
-}
-
-
-let list =
-collection();
-
-
-let duplicate =
-list.find(
-x =>
-(
-item.barcode &&
-x.barcode ===
-item.barcode
-)
-||
-(
-item.catalog_number &&
-x.catalog_number ===
-item.catalog_number &&
-item.album &&
-x.album ===
-item.album
-)
-);
-
-
-if(duplicate){
-
-if(
-!confirm(
-"Dieses Exemplar sieht nach einem möglichen Duplikat aus. Trotzdem speichern?"
-)
-){
-
-return;
-
-}
-
-}
-
-
-list.push(item);
-
-localStorage.vinylCollection =
-JSON.stringify(list);
-
-
-setStatus(
-"💾 In deiner Sammlung gespeichert.",
-"ok"
-);
-
-render();
-
-}
-
-
-/* =========================
-   SAMMLUNG RENDERN
-========================= */
-
-function render(){
-
-let list =
-collection();
-
-
-let filter =
-(
-$("filter")?.value ||
-""
-)
-.toLowerCase();
-
-
-let sort =
-$("sort")?.value ||
-"artist";
-
-
-list =
-list.filter(
-item =>
-Object.values(item)
-.join(" ")
-.toLowerCase()
-.includes(filter)
-);
-
-
-list.sort(
-(a,b)=>{
-
-if(sort === "year"){
-
-return String(b.year)
-.localeCompare(
-String(a.year)
-);
-
-}
-
-if(sort === "added"){
-
-return String(b.added)
-.localeCompare(
-String(a.added)
-);
-
-}
-
-return (
-a.artist +
-a.album
-)
-.localeCompare(
-b.artist +
-b.album
-);
-
-}
-);
-
-
-$("list").innerHTML =
-list.map(
-(item,index)=>`
-
-<div class="item">
-
-<h3>
-${esc(item.artist || "Unbekannter Künstler")}
-–
-${esc(item.album || "Unbekannt")}
-</h3>
-
-<div class="muted">
-
-${esc(item.label)}
-·
-${esc(item.year)}
-·
-${esc(item.catalog_number)}
-·
-${esc(item.color_variant)}
-
-</div>
-
-${
-item.matrix_runout
-?
-`<div class="muted">
-Matrix:
-${esc(item.matrix_runout)}
-</div>`
-:
-""
-}
-
-<button
-onclick="loadItem(${index})">
-Bearbeiten
-</button>
-
-<button
-class="alt"
-onclick="deleteItem(${index})">
-Löschen
-</button>
-
-</div>
-
-`
-)
-.join("")
-||
-"<p class='muted'>Noch keine Einträge.</p>";
-
-}
-
-
-function esc(value){
-
-return String(
-value || ""
-)
-.replace(
-/[&<>"]/g,
-char =>
-({
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;"
-
-}[char])
-);
-
-}
-
-
-function loadItem(index){
-
-let item =
-collection()[index];
-
-
-let fields = {
-
-artist:"artist",
-
-album:"album",
-
-catalog_number:"cat",
-
-barcode:"barcode",
-
-label:"label",
-
-format:"format",
-
-year:"year",
-
-country:"country",
-
-color_variant:"variant",
-
-matrix_runout:"matrix",
-
-quantity:"quantity",
-
-notes:"notes"
+  }
 
 };
 
 
-for(
-let key in fields
-){
+/* CAPTION KOPIEREN */
 
-$(fields[key]).value =
-item[key] || "";
+$("copyBtn").onclick =
+  async () => {
 
-}
+    try {
 
+      await navigator
+        .clipboard
+        .writeText(
+          $("caption").value
+        );
 
-tab("detective");
+      $("status").textContent =
+        "Caption kopiert.";
 
-}
+    }
 
+    catch(e) {
 
-function deleteItem(index){
+      $("status").textContent =
+        "Caption konnte nicht kopiert werden.";
 
-let list =
-collection();
+    }
 
-list.splice(
-index,
-1
-);
+  };
 
-localStorage.vinylCollection =
-JSON.stringify(list);
 
-render();
+/* CAPTION NEU ERZEUGEN */
 
-}
+$("newCaptionBtn").onclick = () => {
 
+  const artist =
+    $("artist").value ||
+    "KÜNSTLER";
 
-/* =========================
-   EXPORT
-========================= */
+  const album =
+    $("album").value ||
+    "ALBUM";
 
-function download(
-name,
-data,
-type
-){
 
-let link =
-document.createElement("a");
-
-link.href =
-URL.createObjectURL(
-new Blob(
-[data],
-{type}
-)
-);
-
-link.download =
-name;
-
-link.click();
-
-}
-
-
-function exportJSON(){
-
-download(
-
-"vinyl-collection.json",
-
-JSON.stringify(
-collection(),
-null,
-2
-),
-
-"application/json"
-
-);
-
-}
-
-
-function exportCSV(){
-
-let fields = [
-
-"artist",
-"album",
-"catalog_number",
-"barcode",
-"label",
-"format",
-"year",
-"country",
-"color_variant",
-"matrix_runout",
-"quantity",
-"notes"
-
-];
-
-
-let csv =
-fields.join(",")
-+
-"\n"
-+
-collection()
-.map(
-item =>
-fields
-.map(
-field =>
-`"${String(
-item[field] || ""
-)
-.replaceAll(
-'"',
-'""'
-)}"`
-)
-.join(",")
-)
-.join("\n");
-
-
-download(
-"vinyl-collection.csv",
-csv,
-"text/csv"
-);
-
-}
-
-
-async function importJSON(event){
-
-try{
-
-let file =
-event.target.files[0];
-
-let data =
-JSON.parse(
-await file.text()
-);
-
-
-if(
-Array.isArray(data)
-){
-
-localStorage.vinylCollection =
-JSON.stringify(data);
-
-render();
-
-alert(
-"Import erfolgreich."
-);
-
-}
-
-}catch{
-
-alert(
-"Ungültige JSON-Datei."
-);
-
-}
-
-}
-
-
-/* =========================
-   INSTAGRAM
-========================= */
-
-function makeCaption(){
-
-let item =
-record();
-
-
-let artist =
-(
-item.artist ||
-"ARTIST"
-)
-.toUpperCase();
-
-
-let album =
-(
-item.album ||
-"ALBUM"
-)
-.toUpperCase();
-
-
-let hashtags =
-"#vinyl #vinylcollection #recordcollection #nowspinning";
-
-
-if(item.artist){
-
-hashtags +=
-" #" +
-item.artist
-.replace(
-/[^a-z0-9]/gi,
-""
-)
-.toLowerCase();
-
-}
-
-
-if(item.label){
-
-hashtags +=
-" #" +
-item.label
-.replace(
-/[^a-z0-9]/gi,
-""
-)
-.toLowerCase();
-
-}
-
-
-$("caption").value =
-
-`${artist} - ${album}
-————————————
+  $("caption").value =
+`${artist.toUpperCase()} - ${album.toUpperCase()}
+_______________________________________________________
 *
-${$("ah").value} ${item.year || ""}
+${$("artistIg").value || ""}
 *
-${item.color_variant || "Release"}
+${$("variant").value || "Reissue / Variante"}
 *
-${$("lh").value} ${new Date().getFullYear()}
+${$("labelIg").value || ""}
 *
 *
 *
-${hashtags}`;
+#vinyl #vinylcollection #records`;
 
-}
-
-
-async function copyCaption(){
-
-if(
-!$("caption").value
-){
-
-makeCaption();
-
-}
-
-await navigator.clipboard.writeText(
-$("caption").value
-);
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-function tab(id){
-
-[
-"detective",
-"collection",
-"captions",
-"settings"
-
-]
-.forEach(
-section =>
-$(section)
-.classList.toggle(
-"hidden",
-section !== id
-)
-);
-
-
-if(
-id === "collection"
-){
-
-render();
-
-}
-
-}
-
-
-function focusField(id){
-
-$(id).focus();
-
-}
-
-
-/* START */
-
-loadSettings();
-
-render();
+};
 
 </script>
 
